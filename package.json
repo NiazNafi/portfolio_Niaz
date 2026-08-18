@@ -1,0 +1,24 @@
+{
+  "name": "niaz-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal site for Niaz Nafi Rahman. Static React build; every asset committed and served same-origin.",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace client",
+    "build": "npm run generate && npm run build --workspace client && node scripts/prerender.mjs",
+    "preview": "npm run preview --workspace client",
+    "check": "node scripts/check-budget.mjs",
+    "generate": "node scripts/generate.mjs",
+    "assets": "node scripts/prepare-assets.mjs",
+    "api": "npm run start --workspace server",
+    "api:push": "node --env-file-if-exists=.env scripts/db-push.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
+  }
+}

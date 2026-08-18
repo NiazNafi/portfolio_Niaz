@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edeff3" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/pdf" href="/cv.pdf" title="CV" />
+
+    <!--
+      Preloaded because these two carry the first text painted: the Latin cut of
+      the display face for the name in the header and the h1, and the Latin body
+      face for everything under it. The Bengali subsets are deliberately not
+      preloaded — they are only needed once a reader reaches an ambigram caption,
+      and pulling them up front would spend the mobile connection on bytes the
+      first screen does not use.
+    -->
+    <link
+      rel="preload"
+      href="/fonts/tiro-bangla-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/hind-siliguri-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!--head-->
+  </head>
+  <body>
+    <!-- data-route is filled in per page by scripts/prerender.mjs; see client/src/main.jsx -->
+    <div id="root" data-route="/"><!--app--></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "@portfolio/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Content API over Supabase, with the committed snapshot as its floor.",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --env-file-if-exists=../.env --watch src/index.js",
+    "start": "node --env-file-if-exists=../.env src/index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  }
+}

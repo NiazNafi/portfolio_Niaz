@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="N, rotationally symmetric">
+  <!--
+    The mark is the site's idea at 16px: a form that is unchanged by a half
+    turn. Two counter-rotating strokes about the same centre — turn it over and
+    it is identical, which is the only thing an ambigram site's favicon needs
+    to say.
+  -->
+  <rect width="32" height="32" fill="#14171e"/>
+  <g fill="none" stroke="#edeff3" stroke-width="3" stroke-linecap="round">
+    <path d="M10 22 V10 L22 22 V10"/>
+  </g>
+  <circle cx="16" cy="16" r="1.6" fill="#8e1f32"/>
+</svg>

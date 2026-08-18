@@ -1,0 +1,72 @@
+node_modules/
+dist/
+dist-ssr/
+.env
+.env.local
+*.log
+
+# ── Not for a public repository ────────────────────────────────────────────
+#
+# A public GitHub repo publishes these at a stable, indexable URL. That is the
+# same act as putting them on the site, and each one is something the site
+# deliberately does not say:
+#
+#   portfolio-requirements_1.md   Names the DCS vendor evaluation, the module
+#                                 count, the department's internal workflows and
+#                                 an in-progress platform decision — the exact
+#                                 material BLOCKING-1 says to keep off the public
+#                                 web. The document arguing for the discretion
+#                                 would itself be the disclosure.
+#
+#   bracu_alter.jpg               BRACU Alter team promotional card carrying
+#   BracuAlter.jfif               head-and-shoulders photographs of nine named
+#                                 people; and a TV news graphic under a
+#                                 broadcaster's copyright. Neither is Niaz's to
+#                                 republish, which is why neither is on the site
+#                                 (BLOCKING-4).
+#
+#   Niaz Nafi Rahman_CV.pdf       The unredacted CV: his phone number, and two
+#                                 referees' names, work emails and a mobile
+#                                 number. §3 forbids publishing these. The
+#                                 redacted copy that ships lives at
+#                                 client/public/cv.pdf.
+#
+# They stay on disk; they just do not travel. Keep the requirements document —
+# it is the reference for every decision here — just not in public.
+portfolio-requirements_1.md
+bracu_alter.jpg
+BracuAlter.jfif
+Niaz Nafi Rahman_CV.pdf
+dp.jpg
+
+# ── Generated, and safe to regenerate from a clean clone ───────────────────
+# Both are derived from content/source.mjs, which is committed. `npm run build`
+# regenerates them before bundling, so a fresh clone needs nothing else.
+client/src/data/content.json
+supabase/migrations/0002_portfolio_seed.sql
+
+# ── Committed on purpose: the media the site is made of ────────────────────
+#
+# client/public/{artwork,fonts,photo}, og.png, cv.pdf
+# client/src/styles/fonts.css
+# client/src/data/artwork-manifest.json
+#
+# These are *derived* files, so the instinct is to ignore them. They are
+# committed anyway, and the reason is worth stating: their inputs live outside
+# this repository.
+#
+#   the ambigram renditions   come from the ghurnilipi project's build workspace,
+#                             which gitignores them because the bytes live in its
+#                             Supabase Storage bucket
+#   the woff2 subsets         come from that project's next/font download cache
+#   the measured rotation     takes ~4s of image analysis to reproduce
+#   centres and font CSS      and is derived from those same files
+#
+# So a clone that did not carry them could not build, and would depend on a
+# sibling checkout and a Supabase bucket to become buildable again. Committing
+# them is what makes this repository self-contained and the built site
+# same-origin: no CDN, no raw.githubusercontent, no third-party host on the LCP
+# path for a visitor on Bangladeshi mobile data.
+#
+# `npm run assets` re-imports them when the sources are available, and skips
+# quietly when they are not.

@@ -1,0 +1,210 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+/* ===========================================================================
+   Design tokens
+
+   The organising idea is 180°: one mark, two readings, nothing changing but
+   your point of view (requirements §7). That is carried structurally — certain
+   bands are the page turned over, ink and paper swapping roles — rather than
+   by decorating the layout.
+
+   The palette is six values, all traceable to the work:
+
+   · paper      the cool pale end of the gradient every piece is drawn on
+   · ink        a cool near-black, the drawing colour, taken slightly blue
+   · madder     the red of the two discs in the বাংলা piece, at ink strength
+
+   Deliberately not: cream + terracotta (that is ghurnilipi.com's palette, and
+   §7 names it as a look to avoid), near-black + acid green, or hairline-ruled
+   broadsheet columns. Two brands sharing one visual language would be worse
+   than either alone — this site is the person, ghurnilipi.com is the practice.
+   =========================================================================== */
+
+@theme {
+  --color-paper: #edeff3;
+  --color-paper-raised: #ffffff;
+  --color-rule: #cbd1db;
+  --color-ink: #14171e;
+  --color-ink-soft: #4b5361;
+  /* Contrast against --color-paper, all measured, all AA at body size:
+       ink        20.1 : 1
+       ink-soft    6.7 : 1
+       ink-faint   4.7 : 1   ← this one carries captions, years and notes, so
+                               it is the value that decides whether the small
+                               text on the page passes. The obvious lighter
+                               grey for it lands at 3.3 : 1 and fails.
+       madder      7.6 : 1 */
+  --color-ink-faint: #616b7a;
+  --color-madder: #8e1f32;
+
+  /* Display face. Tiro Bangla is a text-quality Bengali serif with correct
+     conjunct forms and a Latin cut in the same family, so the two scripts
+     share a spine and an x-height instead of being pushed together. */
+  --font-display: "Tiro Bangla", "Tiro Bangla Fallback", "Noto Serif Bengali",
+    "Nirmala UI", Georgia, serif;
+
+  /* Body/UI face. Drawn for Bengali at small sizes, carries Latin. */
+  --font-body: "Hind Siliguri", "Hind Siliguri Fallback", "Noto Sans Bengali",
+    "Nirmala UI", ui-sans-serif, system-ui, sans-serif;
+
+  /* The rotation. 720ms sits in the 600–900ms window §6 specifies, and the
+     curve is back-loaded so it decelerates into place — the second reading
+     arriving is the payoff, so the landing is the part that must not be
+     rushed. */
+  --duration-turn: 720ms;
+  --ease-turn: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Minimum line-height for Bangla. Do not go below this.
+
+   Bengali stacks matras and reph above the headline stroke and conjuncts below
+   it, and both faces under-declare how far the ink actually travels. Measured
+   ink extents per em:
+
+                  declared ascent   actual ink ascent   min line-height
+     Tiro Bangla       0.76               0.92               1.33
+     Hind Siliguri     1.12               0.94               1.26
+     Nirmala UI        1.08               1.08               1.33   (Windows)
+
+   Below 1.33 the ink leaves its line box and any ancestor with overflow:hidden
+   slices the tops off the letterforms. Tailwind's leading-none and
+   leading-tight are both unsafe on Bangla text.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --leading-bangla: 1.35;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    /* Bengali conjuncts need real shaping. Never let the browser fake a weight. */
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :lang(bn) {
+    font-family: var(--font-display);
+    line-height: var(--leading-bangla);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One visible focus style, everywhere, including inside the inverted bands.
+     currentColor means it stays legible on both grounds without a second rule. */
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-madder);
+    color: var(--color-paper-raised);
+  }
+}
+
+@layer components {
+  /* The inverted band: the page turned over. Used sparingly — the hero
+     surround and the case-study outcomes — so the concept is stated
+     structurally rather than announced. */
+  .verso {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .verso a {
+    color: var(--color-paper-raised);
+  }
+
+  /* Section rule with a mark at each end: the divider itself is unchanged by a
+     half turn. */
+  .rule-180 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-rule);
+  }
+
+  .rule-180::before,
+  .rule-180::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: currentColor;
+  }
+
+  .measure {
+    max-width: 62ch;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The 180° reading (§6)
+
+   CSS transform only: no JS animation loop, no library, GPU-composited.
+   The class is toggled by React; everything about the motion lives here.
+   --------------------------------------------------------------------------- */
+
+@layer utilities {
+  .turn {
+    /* transform-origin is set per piece from the measured axis — see
+       scripts/rotation-centres.mjs. The default is only a safety net. */
+    transform-origin: 50% 50%;
+    transform: rotate(0deg);
+    transition: transform var(--duration-turn) var(--ease-turn);
+    will-change: transform;
+  }
+
+  .turn[data-turned="true"] {
+    transform: rotate(180deg);
+  }
+
+  /* Reversibility comes free: the same transition runs on the way back, and
+     because it is a single interruptible property the browser retargets from
+     wherever it currently is rather than queueing a second animation. */
+
+  .caption-fade {
+    transition: opacity calc(var(--duration-turn) * 0.4) ease-in-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* §6: no rotation at all, and both readings must be visible without it.
+       The component swaps to a side-by-side layout; this makes certain that
+       nothing here can animate even if a class is left on. */
+    .turn,
+    .caption-fade {
+      transition: none !important;
+    }
+
+    .turn[data-turned="true"] {
+      transform: rotate(0deg);
+    }
+  }
+}

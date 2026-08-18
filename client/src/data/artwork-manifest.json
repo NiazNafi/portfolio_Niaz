@@ -1,0 +1,138 @@
+{
+  "mayeesha-aaman": {
+    "origin": {
+      "x": 0.5156,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "adib-rabita": {
+    "origin": {
+      "x": 0.5391,
+      "y": 0.4922
+    },
+    "width": 960,
+    "height": 960
+  },
+  "saiara-akif": {
+    "origin": {
+      "x": 0.5156,
+      "y": 0.4844
+    },
+    "width": 960,
+    "height": 960
+  },
+  "shourov-taniya": {
+    "origin": {
+      "x": 0.5156,
+      "y": 0.4766
+    },
+    "width": 960,
+    "height": 960
+  },
+  "sompriti": {
+    "origin": {
+      "x": 0.5,
+      "y": 0.4922
+    },
+    "width": 960,
+    "height": 960
+  },
+  "bangla": {
+    "origin": {
+      "x": 0.4922,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "shunnota": {
+    "origin": {
+      "x": 0.4922,
+      "y": 0.4922
+    },
+    "width": 960,
+    "height": 960
+  },
+  "musab": {
+    "origin": {
+      "x": 0.5,
+      "y": 0.4844
+    },
+    "width": 960,
+    "height": 540
+  },
+  "shreya": {
+    "origin": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "abheri": {
+    "origin": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "minhaj": {
+    "origin": {
+      "x": 0.5078,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "minhaj-alt": {
+    "origin": {
+      "x": 0.5078,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "nafis": {
+    "origin": {
+      "x": 0.5078,
+      "y": 0.5078
+    },
+    "width": 960,
+    "height": 960
+  },
+  "towsif": {
+    "origin": {
+      "x": 0.5078,
+      "y": 0.5078
+    },
+    "width": 960,
+    "height": 960
+  },
+  "tonu": {
+    "origin": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "jarif": {
+    "origin": {
+      "x": 0.5078,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 960
+  },
+  "mihan": {
+    "origin": {
+      "x": 0.5156,
+      "y": 0.5
+    },
+    "width": 960,
+    "height": 540
+  }
+}
