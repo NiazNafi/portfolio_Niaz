@@ -142,10 +142,66 @@ any of the four rows above, so it will tell you when the replacement is clean.
 
 | Item | Where it shows | What is needed |
 |---|---|---|
-| arXiv URL for the thesis | Projects card shows a gap instead of a link | The exact URL. The CV also says "arXiv link" rather than a URL, so it is missing in both places. |
-| AI Tutoring Platform demo | Projects card shows a gap | Is it still live? A dead "Live Demo" is worse than no link. The CV says "Github link" rather than a URL. |
 | CV as an HTML page | Not built | Better for ATS scraping and phones, at the cost of maintaining two copies |
 | DCS documentation work | Invisible on the site | Anything shareable in redacted form — it is substantial work and currently reads as absent |
+| Your CV's project links | The CV, not the site | It still says "arXiv link" and "Github link" as literal text. Both URLs are now known and live — worth putting them in the CV too. |
+
+## Resolved
+
+All three project cards now link out; there are no "Not published yet" gaps left
+in Projects.
+
+| Project | Link | Verified |
+|---|---|---|
+| Illustrator panel | `github.com/NiazNafi/Bangla-ambigram-illustrator-panel` | Public, substantial README |
+| Thesis | `arxiv.org/abs/2511.14606` | Title matches exactly; submitted 18 Nov 2025 |
+| AI Tutoring Platform | `tutoring-platform-five.vercel.app` | Live — "CourseKori", loads clean |
+
+The arXiv URL is stored **unversioned**. You gave me `/abs/2511.14606v1`, which
+pins version 1; dropping the suffix means the link follows any revision you
+publish later.
+
+### What the arXiv record changed on the site
+
+**The thesis is now described as co-authored.** The paper has four authors —
+Shreya Adrita Banik, Niaz Nafi Rahman, Tahsina Moiukh, Farig Sadeque — and you
+are second. The card previously read as sole work. This is the same trap §3
+flags for BRACU Alter, and the same fix: an interviewer will click the link, see
+four names, and a first-person-singular description becomes a credibility problem
+instead of a strong line. Second author on a published paper needs no inflation.
+
+**Three figures were removed because the abstract does not support them.** The
+card used to assert a *15,000-article* corpus drawn from the *FIGNEWS 2024*
+subset, inter-annotator agreement of *kappa 0.65–0.68*, and *five* model families
+across *three* inference regimes. Those came from §3 of the requirements, i.e.
+from your CV. The published abstract names **four** model families (GPT, BERT,
+RoBERTa, FLAN) and states no corpus size, no dataset name, and no kappa.
+
+An abstract routinely omits dataset size and agreement scores, so those two may
+well be in the paper body — but "five model families" directly contradicts a list
+of four, and the site now links to the paper, so any mismatch is one click from
+being noticed. The card was rewritten to say only what the abstract says.
+
+**If the figures are in the paper, tell me and they go back in.** They are good
+numbers and worth having. I just will not assert them over a published abstract
+that lists something different.
+
+### Two things about the tutoring demo
+
+Neither is in this repository, both are one-line fixes in that project, and both
+are what a recruiter sees first:
+
+- **The browser tab reads "Vite + React + TS."** The default template title was
+  never changed, so the tab on your own demo advertises the scaffold rather than
+  the product. It is one line in that project's `index.html`.
+- **The featured courses are placeholder data** — "Dr. Sarah Chen", "John Smith",
+  "Prof. Michael Brown", with invented student counts and ratings. Fine for a
+  demo, but a reader who notices may read the whole thing as mocked up. Worth
+  either labelling as sample data or replacing with something real.
+
+Also worth knowing: fetching that URL server-side returns only the SPA shell, so
+it *looks* like an unbuilt template. It is not — it renders fine in a browser. I
+checked it that way before linking it.
 
 
 

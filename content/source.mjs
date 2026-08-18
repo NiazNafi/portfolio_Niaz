@@ -227,13 +227,25 @@ export const projects = [
     id: "thesis",
     order: 20,
     title: "Bridging Human and Model Perspectives",
-    kicker: "Undergraduate thesis",
+    /**
+     * Second of four authors — Shreya Adrita Banik, Niaz Nafi Rahman, Tahsina
+     * Moiukh, Farig Sadeque — verified against the arXiv record.
+     *
+     * The kicker says "co-authored" and the body says "we" for the same reason
+     * §3 insists on "led the AI team *within* BRACU Alter": an interviewer will
+     * unpick it. A four-author paper described in the first person singular is
+     * the kind of thing that turns a genuinely good result into a credibility
+     * problem, and it gains nothing — second author on a published paper is a
+     * strong line on its own.
+     */
+    kicker: "Co-authored undergraduate thesis · published on arXiv",
     oneLiner:
       "Political bias detection in news media using large language models — measured against what human annotators actually agreed on.",
-    body: "A 15,000-article human-annotated corpus drawn from the FIGNEWS 2024 subset, with inter-annotator agreement of kappa 0.65 to 0.68. Five model families were evaluated across three inference regimes, and the interesting result is the gap: where models and people disagree about what counts as bias.",
+    body: "A manually annotated corpus of news articles, used to compare how humans and four model families — GPT, BERT, RoBERTa and FLAN — judge political slant. Fine-tuned RoBERTa aligned closest with human labels among the transformer baselines; GPT agreed most strongly overall, zero-shot. The interesting result is the gap itself: humans and models disagree systematically about what counts as bias, not randomly.",
     stack: ["Python", "Hugging Face Transformers", "LangChain"],
-    link: null,
-    linkNote: TODO("exact arXiv URL for the thesis"),
+    // Unversioned on purpose: /abs/2511.14606v1 pins version 1, while this
+    // follows any revision the authors publish later.
+    link: "https://arxiv.org/abs/2511.14606",
   },
   {
     id: "ai-tutoring",
@@ -244,10 +256,10 @@ export const projects = [
       "A study tool that generates questions from the material a student is actually reading, and marks them as they go.",
     body: "Contextual multiple-choice generation, a chatbot for follow-up questions, and feedback during a test rather than after it. Built on the Groq API because the latency budget for 'feels like a tutor' is small.",
     stack: ["React", "Express.js", "Groq API"],
-    link: null,
-    linkNote: TODO(
-      "is the AI Tutoring Platform demo still live? A dead 'Live Demo' link is worse than no link",
-    ),
+    // Checked in a real browser, not with a fetch: it is a client-rendered SPA,
+    // so fetching the URL returns only the shell and looks like an empty
+    // template. It is live and it is the platform.
+    link: "https://tutoring-platform-five.vercel.app/",
   },
 ];
 
