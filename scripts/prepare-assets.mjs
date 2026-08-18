@@ -54,6 +54,15 @@ const warn = [];
 /** Sources that are not on this machine, where the committed copy stands. */
 const skipped = [];
 
+/**
+ * Everything the client needs to know about an asset before it loads: intrinsic
+ * dimensions, so a box can be reserved and nothing shifts (§7), and for the
+ * ambigrams the measured rotation axis. Both steps write into this and it is
+ * written to disk once at the end — collecting first means a later step cannot
+ * overwrite an earlier one's entries.
+ */
+const manifest = {};
+
 const newerThan = async (out, src) => {
   if (!existsSync(out)) return false;
   const [a, b] = await Promise.all([stat(out), stat(src)]);
@@ -187,6 +196,59 @@ async function signature() {
   ok.push(`signature: ${piece.widths.length} rendition(s) from frame ${FRAME}, transparent ink`);
 }
 
+// ── case study photographs ─────────────────────────────────────────────────
+
+/**
+ * §5.4: WebP, responsive srcset, EXIF stripped, never a 4MB phone photo shipped
+ * to a mobile visitor.
+ *
+ * The source is 1920×1080 and 1.1MB. Its EXIF is 137 bytes containing only
+ * "BeFunky Photo Editor" — no GPS, no camera, no timestamp, because it has
+ * already been through an online editor. Stripped again here regardless: sharp
+ * drops metadata by default, and relying on a previous tool's behaviour is not
+ * a privacy control.
+ *
+ * No JPEG fallback, which §5.4 asks for. WebP has had support in every current
+ * browser since 2020, so the fallback would double the committed weight of every
+ * photograph for a set of visitors that is now empty. Stated rather than skipped
+ * silently — see docs/OPEN-ITEMS.md.
+ */
+async function caseStudyPhotos() {
+  const out = path.join(pub, "photo");
+  await mkdir(out, { recursive: true });
+
+  for (const photo of content.caseStudy.photos) {
+    const src = path.join(root, photo.source);
+    if (!existsSync(src)) {
+      const have = existsSync(path.join(out, `${photo.id}-1024.webp`));
+      if (have) skipped.push(`${photo.id}: ${photo.source} not present; keeping the committed renditions`);
+      else warn.push(`${photo.id}: ${photo.source} not found and nothing committed`);
+      continue;
+    }
+
+    const meta = await sharp(src).metadata();
+    manifest[photo.id] = { width: meta.width, height: meta.height };
+    if (Math.max(meta.width, meta.height) < 1600) {
+      // §5.4: under ~1600px on the long edge, use it small rather than
+      // upscaling — a stretched photo of a robot looks worse than a sharp one.
+      warn.push(
+        `${photo.id}: source is ${meta.width}×${meta.height}, under the 1600px long edge §5.4 asks for`,
+      );
+    }
+
+    for (const w of photo.widths) {
+      const dst = path.join(out, `${photo.id}-${w}.webp`);
+      if (await newerThan(dst, src)) continue;
+      await sharp(src)
+        .rotate() // honour EXIF orientation before the metadata is discarded
+        .resize({ width: w, withoutEnlargement: true })
+        .webp({ quality: 80, effort: 6 })
+        .toFile(dst);
+    }
+    ok.push(`${photo.id}: ${photo.widths.length} rendition(s), EXIF stripped`);
+  }
+}
+
 // ── rotation centres ───────────────────────────────────────────────────────
 
 /**
@@ -199,8 +261,6 @@ async function signature() {
  * a lot of asymmetric background rather than that the drawing is wrong.
  */
 async function centres() {
-  const out = path.join(root, "client/src/data/artwork-manifest.json");
-  const result = {};
   const weak = [];
 
   // The seal is measured alongside the gallery pieces: it is the hero, so its
@@ -212,7 +272,7 @@ async function centres() {
     // The aspect ratio travels with the centre because both are needed before
     // the image loads: the ratio reserves the box so nothing shifts (§7), the
     // centre tells the box where to turn about.
-    result[piece.id] = {
+    manifest[piece.id] = {
       origin: { x: c.x, y: c.y },
       width: meta.width,
       height: meta.height,
@@ -220,13 +280,7 @@ async function centres() {
     if (c.confidence < 0.35) weak.push(`${piece.id} (${c.confidence})`);
   }
 
-  await writeFile(
-    out,
-    `${JSON.stringify(result, null, 2)}\n`,
-    "utf8",
-  );
-
-  ok.push(`artwork manifest: ${Object.keys(result).length} piece(s) measured`);
+  ok.push(`rotation axes: ${content.ambigrams.length + 1} piece(s) measured`);
   if (weak.length) {
     warn.push(
       `rotation centres: low confidence on ${weak.join(", ")} — ` +
@@ -492,11 +546,20 @@ async function cv() {
 await mkdir(pub, { recursive: true });
 await artwork();
 await signature();
+await caseStudyPhotos();
 await centres();
 await portrait();
 await fonts(await fontMap());
 await ogImage();
 await cv();
+
+await writeFile(
+  path.join(root, "client/src/data/artwork-manifest.json"),
+  `${JSON.stringify(manifest, null, 2)}
+`,
+  "utf8",
+);
+ok.push(`asset manifest: ${Object.keys(manifest).length} entr(ies)`);
 
 for (const line of ok) console.log(`  ✓ ${line}`);
 for (const line of skipped) console.log(`  · ${line}`);

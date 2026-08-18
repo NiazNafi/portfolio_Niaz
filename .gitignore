@@ -18,6 +18,10 @@ dist-ssr/
 #                                 web. The document arguing for the discretion
 #                                 would itself be the disclosure.
 #
+#   Alter_team.jpg                The squad photograph. Its WebP renditions ARE
+#                                 committed and published — this is only the
+#                                 1.1MB original, which nothing needs.
+#
 #   bracu_alter.jpg               BRACU Alter team promotional card carrying
 #   BracuAlter.jfif               head-and-shoulders photographs of nine named
 #                                 people; and a TV news graphic under a
@@ -38,6 +42,7 @@ bracu_alter.jpg
 BracuAlter.jfif
 Niaz Nafi Rahman_CV.pdf
 dp.jpg
+Alter_team.jpg
 
 # ── Generated, and safe to regenerate from a clean clone ───────────────────
 # Both are derived from content/source.mjs, which is committed. `npm run build`

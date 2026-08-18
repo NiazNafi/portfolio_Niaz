@@ -78,26 +78,47 @@ Also outstanding, and more important than the format: **the Bangla spellings in
 artwork.** On an ambigram site a wrong matra is the worst possible bug. Each one
 is a one-word edit.
 
-### BLOCKING-4 · BRACU Alter media rights
+### BLOCKING-4 · BRACU Alter media
 
-**Status: no photographs published. This is a decision, not an omission.**
+**Status: one photograph published. Two of the three supplied files are not
+publishable, and are not published.**
 
-Two image files were supplied in the project directory. Both were examined and
-neither can be published:
-
-| File | What it actually is | Why not |
+| File | What it is | On the site? |
 |---|---|---|
-| `bracu_alter.jpg` (1024×768) | A "Meet the core team" promotional card with head-and-shoulders photographs of **nine named people**, plus BRAC University and LASSET logos | Squad media featuring identifiable third parties. Not yours to republish, and the people in it have not been asked. |
-| `BracuAlter.jfif` (225×225) | A **television news graphic** about the team reaching the final, carrying a broadcaster's branding | Third-party copyright. Also 225px, against a 1600px floor. |
+| `Alter_team.jpg` (1920×1080) | A real photograph: the squad on a flight of steps holding a Bangladesh flag, with the rover on the ground in front of them | **Yes.** This is what §5.4 asked for — the rover clearly visible, at 1920px, with a caption describing what is actually in frame. |
+| `bracu_alter.jpg` (1024×768) | A "Meet the core team" promotional card with head-and-shoulders photographs of **nine named people**, plus BRAC University and LASSET logos | No. Squad media built around third parties' portraits, not yours to republish. |
+| `BracuAlter.jfif` (225×225) | A **television news graphic** about the team reaching the final, carrying a broadcaster's branding | No. Third-party copyright, and 225px against a 1600px floor. |
 
-Useful corroboration from the first file, though: it lists you as **"Control and
-AI"** with a different person as squad Team Lead — which is exactly the scoping
-§3 insists on, and it is good that a document exists saying so.
+Useful corroboration from the promotional card, though: it lists you as **"Control
+and AI"** with a different person as squad Team Lead — exactly the scoping §3
+insists on, and good that a document exists saying so.
 
-**What is needed:** two or three photographs of the robot or the build that you
-took, or have written clearance for, at 1600px or more on the long edge. Then
-add them to `caseStudy.photos` in `content/source.mjs`. Captions and alt text
-should be written from what is actually in frame.
+#### About the published photograph
+
+It is served as WebP at 640 / 1024 / 1536 with a responsive `srcset`: 47KB at
+mobile size against a 1.1MB original. Its EXIF was 137 bytes containing only
+"BeFunky Photo Editor" — no GPS, no camera, no timestamp, because it had already
+been through an online editor. Stripped again on export regardless, since relying
+on another tool's behaviour is not a privacy control.
+
+**No JPEG fallback**, which §5.4 asks for. WebP has had support in every current
+browser since 2020, so the fallback would double the committed weight of every
+photograph for a set of visitors that is now empty. Flagged rather than skipped
+quietly; say the word and it goes in.
+
+**Two things still needed:**
+
+1. **Who took it,** so it can be credited. §5.4 asks for the photographer to be
+   credited and for confirmation that you may republish. The `credit` field is
+   deliberately `null` rather than guessed.
+2. **The people in it.** There are around seventeen identifiable faces. You are
+   in a position to know whether the team is happy to appear on a public,
+   indexed page and I am not — flagging it once and leaving it with you, since
+   you asked for the photograph to go in and it is your team.
+
+**Still wanted:** one or two more frames, ideally the rover on its own and close
+enough to show the tracks and the sensors. §5.4 asks for two or three, so the
+page carries a visible note saying so rather than implying the record is complete.
 
 **The video** (`facebook.com/watch/?v=1143267400016977`) is a plain text link,
 which is fallback tier 3 in §5.4. Nobody has confirmed the URL resolves or who

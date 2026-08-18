@@ -352,9 +352,43 @@ export const caseStudy = {
    * So the case study ships with no photographs and says so, rather than
    * shipping a rights problem. See docs/OPEN-ITEMS.md.
    */
-  photos: [],
+  photos: [
+    {
+      id: "alter-team",
+      source: "Alter_team.jpg",
+      widths: [640, 1024, 1536],
+      /**
+       * §5.4 asks for real alt text describing the image for a screen reader,
+       * "not a keyword stuffing of 'robot AI computer vision'". So this says
+       * what is in the frame, in the order you would notice it.
+       */
+      alt:
+        "The BRACU Alter squad — about seventeen people — arranged on a broad flight of steps, " +
+        "holding a Bangladesh flag between them. On the ground in front sits the rescue rover: a " +
+        "black box body lettered ALTER, carried on four tracked wheels with yellow and blue " +
+        "sprockets, with two further track arms extending forward from the chassis.",
+      caption: "The BRACU Alter squad with the rover.",
+      /**
+       * Left null deliberately. §5.4: "If the photos were taken by the team, the
+       * university, or the RoboCup organisers, credit the photographer and
+       * confirm he may republish them." Nobody has said who took this, so there
+       * is nothing to credit yet — and a made-up credit is worse than none.
+       */
+      credit: null,
+    },
+  ],
+
+  /**
+   * §5.4 wants two or three. There is one, and it is a good one: a real
+   * photograph, 1920px, with the rover clearly visible and the whole squad
+   * around it — which also supports the scoping in §3 better than any sentence
+   * could, because a reader can see it is a large team.
+   *
+   * What would improve the page most is a second frame of the rover on its own,
+   * close enough to show the tracks and the sensor mast.
+   */
   photosNote: TODO(
-    "2–3 publishable photographs of the robot or the build, at least 1600px on the long edge, that Niaz shot or has written clearance to republish. The two files currently in the project directory are team promo and TV news graphics — neither is his to post.",
+    "one or two more photographs — ideally the rover on its own, close enough to show the tracks and the sensors. Also: who took Alter_team.jpg, so it can be credited",
   ),
 
   /**

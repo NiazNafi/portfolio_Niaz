@@ -3,6 +3,43 @@ import { Link } from "react-router-dom";
 import { Missing, Rule } from "@/components/Chrome";
 import { Head } from "@/lib/head";
 import { useContent } from "@/lib/content";
+import manifest from "@/data/artwork-manifest.json";
+
+/**
+ * One case-study photograph.
+ *
+ * `figcaption` has to live inside a `figure` to mean anything — outside one it
+ * is just a styled div as far as assistive technology is concerned, which is
+ * how it was written before.
+ *
+ * Intrinsic dimensions come from the asset manifest rather than being hardcoded,
+ * so the box is reserved at the right aspect and swapping the source for a
+ * differently-shaped photograph cannot introduce a layout shift (§7).
+ */
+function Photograph({ photo, only }) {
+  const dims = manifest[photo.id] ?? { width: 16, height: 9 };
+  const srcSet = photo.widths.map((w) => `/photo/${photo.id}-${w}.webp ${w}w`).join(", ");
+
+  return (
+    <figure>
+      <img
+        src={`/photo/${photo.id}-1024.webp`}
+        srcSet={srcSet}
+        sizes={only ? "(min-width: 768px) 44rem, 92vw" : "(min-width: 640px) 21rem, 92vw"}
+        width={dims.width}
+        height={dims.height}
+        loading="lazy"
+        decoding="async"
+        alt={photo.alt}
+        className="h-auto w-full rounded-sm"
+      />
+      <figcaption className="mt-2 text-sm text-ink-soft">
+        {photo.caption}
+        {photo.credit && <span className="text-ink-faint"> — {photo.credit}</span>}
+      </figcaption>
+    </figure>
+  );
+}
 
 /**
  * RoboCup Rescue case study (§5.4).
@@ -82,26 +119,25 @@ export default function BracuAlter() {
             Photographs and video
           </h2>
 
-          {caseStudy.photos.length > 0 ? (
-            <ul className="mt-6 grid gap-6 sm:grid-cols-2">
+          {caseStudy.photos.length > 0 && (
+            <ul
+              // A single photograph gets the full measure; two or more share it.
+              // §5.4 allows full-bleed only above ~1600px on the long edge, and
+              // the one photograph here is 1920 — so it earns the width.
+              className={`mt-6 ${caseStudy.photos.length > 1 ? "grid gap-6 sm:grid-cols-2" : ""}`}
+            >
               {caseStudy.photos.map((photo) => (
-                <li key={photo.src}>
-                  <img
-                    src={photo.src}
-                    srcSet={photo.srcSet}
-                    sizes="(min-width: 640px) 22rem, 90vw"
-                    width={photo.width}
-                    height={photo.height}
-                    loading="lazy"
-                    decoding="async"
-                    alt={photo.alt}
-                    className="h-auto w-full rounded-sm"
-                  />
-                  <figcaption className="mt-2 text-sm text-ink-soft">{photo.caption}</figcaption>
+                <li key={photo.id}>
+                  <Photograph photo={photo} only={caseStudy.photos.length === 1} />
                 </li>
               ))}
             </ul>
-          ) : (
+          )}
+
+          {/* Present even when there are photographs: §5.4 asks for two or three
+              and there is one, so the page says what is still wanted rather than
+              implying the record is complete. */}
+          {caseStudy.photosNote && (
             <div className="mt-6">
               <Missing>{caseStudy.photosNote.__todo}</Missing>
             </div>
