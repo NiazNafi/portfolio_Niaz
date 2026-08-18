@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr",
+    "dev": "node ../scripts/generate.mjs && vite",
+    "build": "node ../scripts/generate.mjs && vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr",
     "preview": "vite preview"
   },
   "dependencies": {

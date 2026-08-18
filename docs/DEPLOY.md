@@ -106,10 +106,21 @@ In order. The first three are hard blockers.
 
 ## Vercel, concretely
 
-The repository root is not the project root: `package.json` is in `portfolio/`.
-So in the Vercel project settings set **Root Directory** to `portfolio` if you
-push the whole GhurniLipi repo, or leave it blank if `portfolio/` is its own
-repository.
+**Leave Root Directory blank** — i.e. the repository root, where `package.json`
+and `vercel.json` are. Setting it to `client` is the one misconfiguration that
+matters, and it fails in two stages:
+
+1. The build crashes. `client/src/data/content.json` is generated, not
+   committed, and only the build script creates it. (The client's own build now
+   generates it too, so this particular crash no longer happens — but the second
+   problem still does.)
+2. `scripts/prerender.mjs` never runs, because only the root build script invokes
+   it. The site still works as an ordinary single-page app, so it looks fine —
+   what is silently lost is the LCP budget and the per-route title and
+   description that §8 asked for.
+
+`npm run check` fails on the second condition, so run it against any hosted
+build you are unsure about.
 
 Everything else is already in the committed `vercel.json`: build command, output
 directory, `cleanUrls`, cache headers and the content security policy. Vercel

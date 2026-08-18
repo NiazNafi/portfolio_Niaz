@@ -24,11 +24,24 @@ import { Email } from "@/components/Email";
  */
 export default function Home() {
   const [content] = useContent();
-  const { profile, site, experience, education, awards, skills, projects, ambigrams, technique, caseStudy } =
-    content;
+  const {
+    profile,
+    site,
+    signature,
+    experience,
+    education,
+    awards,
+    skills,
+    projects,
+    ambigrams,
+    technique,
+    caseStudy,
+  } = content;
 
-  const hero = ambigrams.find((a) => a.hero) ?? ambigrams[0];
-  const featured = ambigrams.filter((a) => a.featured && a.id !== hero.id).slice(0, 6);
+  // The hero is his own seal, not a gallery piece — see `signature` in
+  // content/source.mjs for why. The gallery grid is therefore the featured
+  // commissions, with nothing held back for the hero.
+  const featured = ambigrams.filter((a) => a.featured).slice(0, 6);
 
   return (
     <>
@@ -61,11 +74,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div>
-            <RotatingAmbigram piece={hero} variant="hero" priority />
-            <p className="mt-4 text-sm text-ink-faint">
-              Hover, tap, or focus and press Enter. It turns 180° and reads as the other name.
-            </p>
+          <div className="mx-auto w-full max-w-sm md:max-w-none">
+            <RotatingAmbigram piece={signature} variant="hero" priority />
+            <p className="mt-3 text-sm text-ink-faint">Hover, tap, or press Enter.</p>
           </div>
         </div>
       </section>

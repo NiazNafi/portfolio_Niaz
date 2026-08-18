@@ -56,8 +56,16 @@ export function RotatingAmbigram({ piece, variant = "tile", sizes, priority = fa
   const captionId = useId();
 
   const art = manifest[piece.id] ?? FALLBACK;
-  const [first, second] = piece.reads;
+  const [first, second] = piece.reads ?? [];
   const flips = Boolean(second); // a single-name piece reads as itself
+
+  /**
+   * Some marks have no verified readings — the signature seal, whose lettering
+   * has not been read back and which the site therefore does not claim to know
+   * the words of. Those carry their own `alt` and `caption` instead, so the
+   * component can describe what the mark does without asserting what it says.
+   */
+  const unread = !first;
 
   /**
    * §6: "Do not animate more than a handful simultaneously; use
@@ -92,9 +100,11 @@ export function RotatingAmbigram({ piece, variant = "tile", sizes, priority = fa
       ? { onPointerEnter: () => setTurned(true), onPointerLeave: () => setTurned(false) }
       : {};
 
-  const alt = flips
-    ? `Ambigram of ${first.bn} (${first.en}); rotated 180° it reads ${second.bn} (${second.en}).`
-    : `Ambigram of ${first.bn} (${first.en}); it reads the same rotated 180°.`;
+  const alt = unread
+    ? piece.alt
+    : flips
+      ? `Ambigram of ${first.bn} (${first.en}); rotated 180° it reads ${second.bn} (${second.en}).`
+      : `Ambigram of ${first.bn} (${first.en}); it reads the same rotated 180°.`;
 
   const srcSet = piece.widths.map((w) => `/artwork/${piece.id}-${w}.webp ${w}w`).join(", ");
 
@@ -102,7 +112,12 @@ export function RotatingAmbigram({ piece, variant = "tile", sizes, priority = fa
     <img
       src={`/artwork/${piece.id}-960.webp`}
       srcSet={srcSet}
-      sizes={sizes ?? (variant === "hero" ? "(min-width: 768px) 40rem, 90vw" : "(min-width: 768px) 20rem, 45vw")}
+      sizes={
+        sizes ??
+        (variant === "hero"
+          ? "(min-width: 768px) 28rem, min(90vw, 24rem)"
+          : "(min-width: 768px) 20rem, 45vw")
+      }
       width={art.width}
       height={art.height}
       alt=""
@@ -128,7 +143,11 @@ export function RotatingAmbigram({ piece, variant = "tile", sizes, priority = fa
         <div className={flips ? "grid grid-cols-2 gap-3" : ""}>
           <div>
             {image()}
-            <Reading reading={first} className="mt-2" />
+            {unread ? (
+              <Caption className="mt-2">{piece.caption}</Caption>
+            ) : (
+              <Reading reading={first} className="mt-2" />
+            )}
           </div>
           {flips && (
             <div>
@@ -170,7 +189,9 @@ export function RotatingAmbigram({ piece, variant = "tile", sizes, priority = fa
       </button>
 
       <figcaption id={captionId} className="mt-3">
-        {flips ? (
+        {unread ? (
+          <Caption>{piece.caption}</Caption>
+        ) : flips ? (
           // Both readings are rendered and crossfaded rather than swapped, so
           // the box never changes height and the turn cannot shift the layout.
           <span className="grid">
@@ -222,6 +243,11 @@ function CrossfadeReading({ reading, visible }) {
       <Reading reading={reading} />
     </span>
   );
+}
+
+/** For a mark whose readings are not verified: says what it is, not what it says. */
+function Caption({ children, className = "" }) {
+  return <span className={`block text-ink-soft ${className}`}>{children}</span>;
 }
 
 function Note({ children }) {

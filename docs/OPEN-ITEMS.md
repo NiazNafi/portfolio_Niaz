@@ -148,6 +148,38 @@ any of the four rows above, so it will tell you when the replacement is clean.
 | DCS documentation work | Invisible on the site | Anything shareable in redacted form — it is substantial work and currently reads as absent |
 
 
+
+## The hero seal
+
+`SIGNATURE.gif` is now the hero object on the home page, and it is the right
+thing to open with: a mark you sign work with, which is itself unchanged by a
+half turn, says the site's whole argument about *you* rather than about a client's
+commission. The couple's piece it replaced moved down into the featured grid.
+
+Two things about how it is used, and one thing needed from you.
+
+**The animation is not used.** The GIF rotates the seal by itself, in 20 frames
+at 1920² and 487KB. One settled frame is extracted instead and the existing CSS
+transform does the turn. The reasons are all §6: a GIF autoplays and loops, so
+the reveal stops being the visitor's action; it cannot respect
+`prefers-reduced-motion`; it is not keyboard-activatable or reversible; and
+487KB on the LCP path is more than the entire rest of the page. The frame costs
+12.5KB at the size most visitors will actually paint.
+
+The seal is also composited to transparent ink rather than left as black on
+white, so it sits on the paper instead of reading as a sticker, and its measured
+rotation axis came out at 0.492 / 0.492 — dead centre, as a circular seal should
+be, which is a useful confirmation that the measuring script is honest.
+
+**What is needed: [TODO] what the seal reads.** The site currently says only what
+the mark demonstrably *does* — "a circular seal of Bangla lettering, drawn so
+that the mark reads the same when rotated 180°" — and does not claim to know the
+word. That is deliberate: ambigram lettering is built to resist being read back,
+and this one has not been checked against anything. Tell me the reading in Bangla
+and transliteration and the caption can name it, which would be better. Also
+worth confirming this is in fact the mark you sign work with, since that is an
+inference from the filename.
+
 ## Where your CV and this site disagree
 
 Found by reading the text layer of `Niaz Nafi Rahman_CV.pdf`. The site was built

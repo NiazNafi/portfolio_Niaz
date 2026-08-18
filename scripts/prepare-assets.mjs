@@ -105,6 +105,88 @@ async function artwork() {
   }
 }
 
+// ── the signature seal ─────────────────────────────────────────────────────
+
+/**
+ * Turns SIGNATURE.gif into the hero object.
+ *
+ * The source is a 20-frame animated GIF, 1920² and 487KB, that rotates the seal
+ * through a half turn by itself. The site does not use the animation, for four
+ * reasons that all come from §6: a GIF autoplays and loops, so the reveal is not
+ * the visitor's action; it cannot respect `prefers-reduced-motion`; it is not
+ * keyboard-activatable or reversible; and 487KB on the LCP path is four times
+ * the whole rest of the page.
+ *
+ * So one settled frame is extracted and the existing CSS transform does the
+ * turn — same effect, ~20KB, and every accessibility requirement intact.
+ *
+ * The frame is also composited to transparent ink rather than kept as black on
+ * white. The seal is a circle; on a white square it reads as a sticker on the
+ * page, and a mark someone signs work with should sit on the paper. Alpha comes
+ * from the luminance, so the antialiased edges survive without a halo.
+ */
+async function signature() {
+  const src = path.join(root, "SIGNATURE.gif");
+  const out = path.join(pub, "artwork");
+  await mkdir(out, { recursive: true });
+
+  const piece = content.signature;
+  if (!existsSync(src)) {
+    const have = existsSync(path.join(out, `${piece.id}-960.webp`));
+    if (have) skipped.push("signature: SIGNATURE.gif not present; keeping the committed renditions");
+    else warn.push("signature: SIGNATURE.gif not found and nothing committed — the hero will be empty");
+    return;
+  }
+
+  const dst960 = path.join(out, `${piece.id}-960.webp`);
+  if (await newerThan(dst960, src)) return;
+
+  // Frames 0 and 11..19 are the settled upright state (verified identical to
+  // two decimal places on mean luminance); the middle frames are mid-turn.
+  const FRAME = 0;
+  const flat = sharp(src, { animated: true, page: FRAME, pages: 1 }).flatten({
+    background: "#ffffff",
+  });
+
+  const { data, info } = await flat.clone().greyscale().raw().toBuffer({ resolveWithObject: true });
+
+  // --color-ink from the stylesheet, so the seal is the same ink as the type.
+  const INK = [0x14, 0x17, 0x1e];
+  const rgba = Buffer.alloc(info.width * info.height * 4);
+  for (let i = 0; i < info.width * info.height; i += 1) {
+    rgba[i * 4] = INK[0];
+    rgba[i * 4 + 1] = INK[1];
+    rgba[i * 4 + 2] = INK[2];
+    rgba[i * 4 + 3] = 255 - data[i]; // white paper → transparent, ink → opaque
+  }
+
+  const inked = sharp(rgba, {
+    raw: { width: info.width, height: info.height, channels: 4 },
+  });
+
+  // Trim the empty margin so the circle fills its box: the hero reserves a
+  // square, and a seal floating in whitespace wastes the one screen a recruiter
+  // is guaranteed to look at.
+  // Encoded rather than raw: a raw buffer carries no dimensions, so handing it
+  // back to sharp for the resize loop would fail to identify the format.
+  const trimmed = await inked.trim({ threshold: 1 }).png().toBuffer();
+
+  for (const w of piece.widths) {
+    await sharp(trimmed)
+      .resize({ width: w, height: w, fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      // Compared at display size against quality 90 / alphaQuality 100: no
+      // visible difference on the strokes, and 26KB instead of 66KB. All the
+      // information in this mark is in the alpha channel — the RGB is one flat
+      // ink colour everywhere — so spending bits on colour fidelity buys nothing.
+      // Lossless is worse still (103KB): the antialiased edges carry too many
+      // distinct alpha levels for the palette to help.
+      .webp({ quality: 62, alphaQuality: 70, effort: 6 })
+      .toFile(path.join(out, `${piece.id}-${w}.webp`));
+  }
+
+  ok.push(`signature: ${piece.widths.length} rendition(s) from frame ${FRAME}, transparent ink`);
+}
+
 // ── rotation centres ───────────────────────────────────────────────────────
 
 /**
@@ -121,7 +203,9 @@ async function centres() {
   const result = {};
   const weak = [];
 
-  for (const piece of content.ambigrams) {
+  // The seal is measured alongside the gallery pieces: it is the hero, so its
+  // axis is the one that matters most.
+  for (const piece of [content.signature, ...content.ambigrams]) {
     const src = path.join(pub, `artwork/${piece.id}-960.webp`);
     if (!existsSync(src)) continue;
     const [c, meta] = await Promise.all([findCentre(src), sharp(src).metadata()]);
@@ -407,6 +491,7 @@ async function cv() {
 
 await mkdir(pub, { recursive: true });
 await artwork();
+await signature();
 await centres();
 await portrait();
 await fonts(await fontMap());

@@ -123,6 +123,9 @@ async function readFromSupabase() {
     // things Niaz would edit in a database at 1am.
     site: snapshot.site,
     technique: snapshot.technique,
+    // The hero seal is not gallery content and has no table; it travels with the
+    // snapshot so a live payload can never arrive without a hero.
+    signature: snapshot.signature,
 
     profile: fromRows.profile(profile.data),
     experience: experience.data.map(fromRows.experience),

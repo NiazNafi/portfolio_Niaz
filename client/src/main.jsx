@@ -27,6 +27,22 @@ const container = document.getElementById("root");
 const served = container?.dataset.route;
 const here = window.location.pathname.replace(/\/$/, "") || "/";
 
+/**
+ * Was this HTML prerendered at all?
+ *
+ * `vite build` leaves the <!--app--> placeholder in index.html; only
+ * scripts/prerender.mjs replaces it with real markup. If the placeholder is
+ * still there then the deploy skipped the prerender step — which happens when a
+ * host is pointed at client/ instead of the repository root, so the root build
+ * script that runs the prerenderer never executes.
+ *
+ * The site still works in that state, as an ordinary single-page app; it just
+ * loses the prerendering. What it must not do is try to hydrate against a
+ * placeholder comment and throw. `npm run check` reports the same condition as a
+ * failure so the deploy gets fixed rather than quietly shipping without it.
+ */
+const prerendered = !container?.innerHTML.includes("<!--app-->");
+
 const tree = (
   <StrictMode>
     <BrowserRouter>
@@ -35,10 +51,11 @@ const tree = (
   </StrictMode>
 );
 
-if (served && served !== here) {
-  // The markup on the page describes a different route. Do not try to reconcile
-  // it — discard it and render the correct page from scratch. Slower for this
-  // one request, and correct, which is the right way round.
+if (!prerendered || (served && served !== here)) {
+  // Either there is no real markup to hydrate, or what is there describes a
+  // different route. Do not try to reconcile it — discard it and render from
+  // scratch. Slower for this one request, and correct, which is the right way
+  // round.
   container.innerHTML = "";
   createRoot(container).render(tree);
 } else {

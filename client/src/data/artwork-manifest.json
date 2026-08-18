@@ -1,4 +1,12 @@
 {
+  "signature": {
+    "origin": {
+      "x": 0.4922,
+      "y": 0.4922
+    },
+    "width": 960,
+    "height": 960
+  },
   "mayeesha-aaman": {
     "origin": {
       "x": 0.5156,

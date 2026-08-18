@@ -385,12 +385,48 @@ const piece = (id, order, kind, reads, extra = {}) => ({
   ...extra,
 });
 
+/**
+ * The hero object (§5.1).
+ *
+ * His own seal, from SIGNATURE.gif: Bangla lettering inside a circle, drawn so
+ * that the whole mark is unchanged by a half turn. That makes it the right thing
+ * to open with. §5.1 wants one live ambigram performing the 180° behaviour
+ * because "the most characteristic thing in his world is a letterform that means
+ * two things depending on how you hold it" — and a mark he signs work with says
+ * that about *him*, where a client's commission says it about the practice.
+ *
+ * It deliberately sits outside the `ambigrams` array, so it heroes the page
+ * without appearing in the gallery: the gallery is a body of commissioned work,
+ * and this is not a piece for sale.
+ *
+ * No `reads`. Ambigram lettering is built to resist being read back, and this
+ * one has not been verified against anything — so the site describes what the
+ * mark demonstrably does and does not claim to know what it says.
+ */
+export const signature = {
+  id: "signature",
+  kind: "seal",
+  reads: [],
+  widths: [480, 960, 1440],
+
+  alt: "A circular seal of Bangla lettering, drawn so that the mark reads the same when rotated 180°.",
+
+  // One line, not two. A caption and a note under the hero both saying "it is
+  // the same upside down" is the page explaining its own joke twice before the
+  // reader has finished looking at it.
+  caption: "My seal. Turn it over and nothing changes — that is the whole idea.",
+
+  reading: TODO(
+    "what the seal reads, in Bangla and transliteration, so the hero caption can name it — " +
+      "and confirm this is the mark you sign work with",
+  ),
+};
+
 export const ambigrams = [
   piece("mayeesha-aaman", 10, "couple", [
     { bn: "মায়ীশা", en: "Mayeesha" },
     { bn: "আমান", en: "Aaman" },
   ], {
-    hero: true,
     featured: true,
     year: 2025,
     note: "Two names in one drawing. Turn it over and the other person's name is the one you were looking at all along.",
@@ -490,6 +526,7 @@ export const site = {
 export default {
   site,
   profile,
+  signature,
   experience,
   education,
   awards,

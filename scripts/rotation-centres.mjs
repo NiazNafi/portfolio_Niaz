@@ -29,7 +29,13 @@ const SPAN = 32;
  * @returns {Promise<{ x: number, y: number, confidence: number }>}
  */
 export async function findCentre(file) {
-  const base = sharp(file).resize(N, N, { fit: "fill" }).greyscale();
+  // Flatten first. The signature seal is transparent ink: every pixel carries
+  // the ink colour and only alpha distinguishes mark from paper, so greyscaling
+  // it un-flattened returns a uniformly dark square with no symmetry to find.
+  const base = sharp(file)
+    .flatten({ background: "#ffffff" })
+    .resize(N, N, { fit: "fill" })
+    .greyscale();
 
   /**
    * Ink is found by high-pass rather than by threshold.

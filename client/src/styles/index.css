@@ -48,12 +48,21 @@
   --font-body: "Hind Siliguri", "Hind Siliguri Fallback", "Noto Sans Bengali",
     "Nirmala UI", ui-sans-serif, system-ui, sans-serif;
 
-  /* The rotation. 720ms sits in the 600–900ms window §6 specifies, and the
-     curve is back-loaded so it decelerates into place — the second reading
-     arriving is the payoff, so the landing is the part that must not be
-     rushed. */
+  /* The rotation. 720ms sits in the 600–900ms window §6 specifies.
+
+     Ease-out quart rather than the ease-out expo this started as. Expo is about
+     82% through the rotation a quarter of the way into the duration; quart is
+     about 68%. Both decelerate into the landing, which is what §6 asks for, but
+     expo spends so much of the time on the last few degrees that the turn itself
+     reads as a snap. Quart keeps the rotation visible — and the rotation is the
+     thing the page is about.
+
+     This is a judgement, not a measurement: a curve cannot be sampled from a
+     background tab, because transitions do not advance while the page is not
+     compositing. What *is* verified is the endpoints — exactly 0° and exactly
+     180°, about the measured axis. */
   --duration-turn: 720ms;
-  --ease-turn: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-turn: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* ---------------------------------------------------------------------------

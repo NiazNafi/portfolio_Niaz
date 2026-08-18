@@ -52,7 +52,9 @@ if (jsBytes > JS_BUDGET) {
 
 // ── LCP: the hero image is what decides it ─────────────────────────────────
 
-const hero = content.ambigrams.find((a) => a.hero) ?? content.ambigrams[0];
+// The hero object is the signature seal (see `signature` in content/source.mjs),
+// not a gallery piece — so it is the seal's weight that decides LCP.
+const hero = content.signature;
 const heroFile = path.join(dist, `artwork/${hero.id}-960.webp`);
 if (existsSync(heroFile)) {
   const { size } = await stat(heroFile);
@@ -158,6 +160,32 @@ if (!existsSync(cvPath)) {
           `${employerTells.map(([, why]) => why).join(", ")} (BLOCKING-1)`,
       );
     }
+  }
+}
+
+// ── did the prerender actually run? ────────────────────────────────────────
+//
+// `vite build` alone leaves the <!--app--> placeholder and no per-route HTML
+// files. That happens when a host is pointed at client/ rather than the
+// repository root, so the root build script — the only thing that invokes
+// scripts/prerender.mjs — never runs.
+//
+// The symptom is quiet: the site still works as a single-page app, so it looks
+// deployed. What is lost is everything §8 wanted the prerender for — the LCP
+// budget, and a distinct title and description per route for anyone whose
+// crawler does not execute JavaScript.
+
+if (html.includes("<!--app-->")) {
+  failures.push(
+    "index.html still contains the <!--app--> placeholder, so the prerender step did not run. " +
+      "Build with `npm run build` from the repository root — if this is a hosted build, the " +
+      "project's root directory is pointed at client/ instead of the repository root.",
+  );
+}
+
+for (const route of ["ambigrams", path.join("work", "bracu-alter")]) {
+  if (!existsSync(path.join(dist, route, "index.html"))) {
+    failures.push(`no prerendered HTML for /${route.replace(/\\/g, "/")}`);
   }
 }
 

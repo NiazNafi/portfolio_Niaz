@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace client",
-    "build": "npm run generate && npm run build --workspace client && node scripts/prerender.mjs",
+    "build": "npm run build --workspace client && node scripts/prerender.mjs",
     "preview": "npm run preview --workspace client",
     "check": "node scripts/check-budget.mjs",
     "generate": "node scripts/generate.mjs",
