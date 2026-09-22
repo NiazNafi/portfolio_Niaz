@@ -24,7 +24,7 @@ export const TODO = (what) => ({ __todo: what });
 
 export const profile = {
   name: "Niaz Nafi Rahman",
-  role: "Executive — Product",
+  role: "Executive, Product",
   employer: "US-Bangla Airlines Ltd",
   location: "Dhaka, Bangladesh",
 
@@ -34,7 +34,7 @@ export const profile = {
    * glance on a 360px screen. Both halves of the split (§1) are stated once.
    */
   positioning:
-    "Product executive at US-Bangla Airlines. I build software that does more with less — and Bangla ambigrams that read two ways.",
+    "Product executive at US-Bangla Airlines. I build software that does more with less, and Bangla ambigrams that read two ways.",
 
   // §3: publish the email, never the phone number or the referees.
   email: "niaznafirahman@gmail.com",
@@ -61,12 +61,14 @@ export const profile = {
 export const experience = [
   {
     id: "us-bangla",
-    title: "Executive — Product",
+    title: "Executive, Product",
     org: "US-Bangla Airlines Ltd",
+    /** For the timeline bar, where the full name will not fit. */
+    shortLabel: "US-Bangla",
     location: "Dhaka",
     start: "2025-09",
     end: null,
-    period: "September 2025 — present",
+    period: "September 2025 to present",
     /**
      * BLOCKING-1 is unresolved, so this is the document's own stated default:
      * "describe the role generically — requirements gathering, specification
@@ -85,11 +87,12 @@ export const experience = [
     id: "ghurnilipi",
     title: "Independent Ambigram Artist",
     org: "Ghurnilipi",
+    shortLabel: "Ghurnilipi",
     orgUrl: "https://ghurnilipi.com",
     location: "Dhaka",
     start: "2020-02",
     end: null,
-    period: "February 2020 — present",
+    period: "February 2020 to present",
     /**
      * §5.3: framed as a practice he built and runs, not a hobby. That framing
      * is the part that counts for a business-facing role.
@@ -102,10 +105,11 @@ export const experience = [
     id: "bracu-tutor",
     title: "Student Tutor",
     org: "BRAC University",
+    shortLabel: "BRACU tutor",
     location: "Dhaka",
     start: "2024-02",
     end: "2025-05",
-    period: "February 2024 — May 2025",
+    period: "February 2024 to May 2025",
     summary:
       "Taught 300+ students across lab sessions and one-to-one consultations in Python, object-oriented programming, and data structures and algorithms. 15 hours a week alongside a full course load.",
     tags: ["Python", "OOP", "Data structures & algorithms"],
@@ -145,7 +149,7 @@ export const awards = [
   {
     id: "vc-dean-list",
     title: "Vice Chancellor's List and Dean's List, BRAC University",
-    year: "2021 — 2025",
+    year: "2021 to 2025",
   },
 ];
 
@@ -216,7 +220,7 @@ export const projects = [
     /** §5.5: say explicitly that the motivation was re-solving the same
      *  problem by hand. That is the interesting part. */
     oneLiner:
-      "An Adobe Illustrator panel that remembers letter pairings, for anyone drawing Bangla ambigrams — which in practice is me.",
+      "An Adobe Illustrator panel that remembers letter pairings, for anyone drawing Bangla ambigrams, which in practice is me.",
     body: "Every ambigram is built out of letter pairings: shapes that read as one letter upright and a different one upside down. I was solving the same pairings over and over by hand. So the panel stores each pairing the first time it is drawn, finds it again by letter, and places it back on the artboard. Each finished word records which pairings built it. Everything lands on disk as readable files plus two spreadsheets, so the archive outlives the tool.",
     stack: ["Adobe Illustrator UXP", "Node.js", "JavaScript"],
     // Verified public, with a substantial README covering installation, the
@@ -240,8 +244,8 @@ export const projects = [
      */
     kicker: "Co-authored undergraduate thesis · published on arXiv",
     oneLiner:
-      "Political bias detection in news media using large language models — measured against what human annotators actually agreed on.",
-    body: "A manually annotated corpus of news articles, used to compare how humans and four model families — GPT, BERT, RoBERTa and FLAN — judge political slant. Fine-tuned RoBERTa aligned closest with human labels among the transformer baselines; GPT agreed most strongly overall, zero-shot. The interesting result is the gap itself: humans and models disagree systematically about what counts as bias, not randomly.",
+      "Political bias detection in news media using large language models, measured against what human annotators actually agreed on.",
+    body: "A manually annotated corpus of news articles, used to compare how humans and four model families (GPT, BERT, RoBERTa and FLAN) judge political slant. Fine-tuned RoBERTa aligned closest with human labels among the transformer baselines; GPT agreed most strongly overall, zero-shot. The interesting result is the gap itself: humans and models disagree systematically about what counts as bias, not randomly.",
     stack: ["Python", "Hugging Face Transformers", "LangChain"],
     // Unversioned on purpose: /abs/2511.14606v1 pins version 1, while this
     // follows any revision the authors publish later.
@@ -251,7 +255,7 @@ export const projects = [
     id: "ai-tutoring",
     order: 30,
     title: "AI Tutoring Platform",
-    kicker: "Full-stack EdTech · Nov — Dec 2024",
+    kicker: "Full-stack EdTech · Nov to Dec 2024",
     oneLiner:
       "A study tool that generates questions from the material a student is actually reading, and marks them as they go.",
     body: "Contextual multiple-choice generation, a chatbot for follow-up questions, and feedback during a test rather than after it. Built on the Groq API because the latency budget for 'feels like a tutor' is small.",
@@ -275,8 +279,8 @@ export const caseStudy = {
   id: "bracu-alter",
   slug: "bracu-alter",
   title: "BRACU Alter at RoboCup Rescue 2024",
-  role: "AI Team Lead — the five-person AI team within the BRACU Alter squad",
-  period: "February 2023 — August 2024",
+  role: "AI Team Lead: the five-person AI team within the BRACU Alter squad",
+  period: "February 2023 to August 2024",
   repo: "https://github.com/NiazNafi/Bracu-Alter",
   summary:
     "A rescue rover that has to find hazard signs in a collapsed building and put them on a map, built by a university squad on a student budget. I led the five-person AI team inside that squad.",
@@ -287,7 +291,7 @@ export const caseStudy = {
       id: "problem",
       heading: "The problem",
       body: [
-        "RoboCup Rescue sets robots loose in a mocked-up disaster site: rubble, ramps, no reliable radio, no map. A robot scores by finding hazardous-material placards, reading them correctly, and reporting where they are — not just that a sign exists, but where in the building it is.",
+        "RoboCup Rescue sets robots loose in a mocked-up disaster site: rubble, ramps, no reliable radio, no map. A robot scores by finding hazardous-material placards, reading them correctly, and reporting where they are. Not just that a sign exists, but where in the building it is.",
         "Two constraints shape everything. The compute has to ride on the robot, so it is a Jetson Xavier and a Raspberry Pi rather than a workstation. And the whole thing is funded like a student project, which turns every sensor choice into a real decision.",
       ],
     },
@@ -295,7 +299,7 @@ export const caseStudy = {
       id: "slice",
       heading: "My team's slice of it",
       body: [
-        "BRACU Alter is a squad split across mechanical, electronics, control and AI. I led the AI team — five people — and we owned the part between the cameras and the map: navigation under ROS Noetic, detecting and classifying the hazmat signs, and turning a detection into a coordinate somebody could act on.",
+        "BRACU Alter is a squad split across mechanical, electronics, control and AI. I led the AI team (five people) and we owned the part between the cameras and the map: navigation under ROS Noetic, detecting and classifying the hazmat signs, and turning a detection into a coordinate somebody could act on.",
         "That scoping matters. The chassis, the drivetrain and the firmware were other people's work, and the squad had its own team lead.",
       ],
     },
@@ -317,7 +321,7 @@ export const caseStudy = {
       figure: "95%",
       label: "hazmat sign detection accuracy",
       context:
-        "On the vision pipeline, running on the robot's own edge hardware — a Jetson Xavier and a Raspberry Pi — not on a workstation with the frames streamed off the robot.",
+        "On the vision pipeline, running on the robot's own edge hardware (a Jetson Xavier and a Raspberry Pi), not on a workstation with the frames streamed off the robot.",
     },
     {
       id: "cost",
@@ -363,7 +367,7 @@ export const caseStudy = {
        * what is in the frame, in the order you would notice it.
        */
       alt:
-        "The BRACU Alter squad — about seventeen people — arranged on a broad flight of steps, " +
+        "The BRACU Alter squad, about seventeen people, arranged on a broad flight of steps, " +
         "holding a Bangladesh flag between them. On the ground in front sits the rescue rover: a " +
         "black box body lettered ALTER, carried on four tracked wheels with yellow and blue " +
         "sprockets, with two further track arms extending forward from the chassis.",
@@ -388,7 +392,7 @@ export const caseStudy = {
    * close enough to show the tracks and the sensor mast.
    */
   photosNote: TODO(
-    "one or two more photographs — ideally the rover on its own, close enough to show the tracks and the sensors. Also: who took Alter_team.jpg, so it can be credited",
+    "one or two more photographs, ideally the rover on its own, close enough to show the tracks and the sensors. And who took Alter_team.jpg, so it can be credited.",
   ),
 
   /**
@@ -460,10 +464,10 @@ export const signature = {
   // One line, not two. A caption and a note under the hero both saying "it is
   // the same upside down" is the page explaining its own joke twice before the
   // reader has finished looking at it.
-  caption: "My seal. Turn it over and nothing changes — that is the whole idea.",
+  caption: "My seal. Turn it over and nothing changes: that is the whole idea.",
 
   reading: TODO(
-    "what the seal reads, in Bangla and transliteration, so the hero caption can name it — " +
+    "what the seal reads, in Bangla and transliteration, so the hero caption can name it, " +
       "and confirm this is the mark you sign work with",
   ),
 };
@@ -497,7 +501,7 @@ export const ambigrams = [
   piece("sompriti", 50, "word", [{ bn: "সম্প্রীতি", en: "Sompriti", gloss: "harmony" }], {
     featured: true,
     year: 2025,
-    note: "A word whose meaning is two sides agreeing, set as one drawing that reads two ways. The conjunct ম্প্র is three consonants stacked — it had to survive being turned over intact.",
+    note: "A word whose meaning is two sides agreeing, set as one drawing that reads two ways. The conjunct ম্প্র is three consonants stacked; it had to survive being turned over intact.",
   }),
   piece("bangla", 60, "word", [{ bn: "বাংলা", en: "Bangla" }], {
     featured: true,
@@ -512,7 +516,7 @@ export const ambigrams = [
   piece("musab", 80, "single", [{ bn: "মুসআব", en: "Musab" }], {
     featured: true,
     year: 2025,
-    note: "Drawn in white on black — the one reversed-out piece in the set.",
+    note: "Drawn in white on black, the one reversed-out piece in the set.",
   }),
   piece("shreya", 90, "single", [{ bn: "শ্রেয়া", en: "Shreya" }], {
     featured: true,
@@ -540,7 +544,7 @@ export const technique = {
   heading: "Why Bangla makes this hard",
   body: [
     "A rotational ambigram is one drawing that reads as one word the right way up and a different word turned 180°. Nothing changes but your point of view.",
-    "Bangla resists it in three specific ways. Conjuncts (যুক্তাক্ষর) fuse two or three consonants into a single shape, so the unit you are inverting is often not a letter at all. Matras hang above and below the line, and they do not survive a rotation unless the pairing was designed for it. And the মাত্রা — the headline stroke running across the top of the word — becomes a floor when you turn the drawing over, so it has to read as both.",
+    "Bangla resists it in three specific ways. Conjuncts (যুক্তাক্ষর) fuse two or three consonants into a single shape, so the unit you are inverting is often not a letter at all. Matras hang above and below the line, and they do not survive a rotation unless the pairing was designed for it. And the মাত্রা (the headline stroke running across the top of the word) becomes a floor when you turn the drawing over, so it has to read as both.",
     "Most letter pairs simply do not resolve. The work is finding the ones that do, and then drawing them so neither reading looks like the compromise.",
   ],
   commission: {
@@ -558,9 +562,9 @@ export const site = {
   /** BLOCKING-2 unresolved. Placeholder canonical origin; change in one place. */
   url: "https://niaznafi.com",
   urlIsPlaceholder: true,
-  title: "Niaz Nafi Rahman — Product, and Bangla ambigrams",
+  title: "Niaz Nafi Rahman · Product and Bangla ambigrams",
   description:
-    "Executive — Product at US-Bangla Airlines, Dhaka. Computer Science, BRAC University. AI team lead on a RoboCup Rescue global finalist. Rotational ambigrams in Bangla script.",
+    "Product executive at US-Bangla Airlines, Dhaka. Computer Science, BRAC University. AI team lead on a RoboCup Rescue global finalist. Rotational ambigrams in Bangla script.",
   ogImage: "/og.png",
   cv: {
     href: "/cv.pdf",

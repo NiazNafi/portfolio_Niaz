@@ -218,7 +218,7 @@ function Reading({ reading, className = "" }) {
       </span>
       <span className="ml-2 text-sm text-ink-soft">
         {reading.en}
-        {reading.gloss ? ` — ${reading.gloss}` : ""}
+        {reading.gloss ? ` (${reading.gloss})` : ""}
       </span>
     </span>
   );

@@ -34,7 +34,7 @@ export function Head({ title, description, path, type = "website" }) {
   const { site, profile } = getContent();
   const collector = useContext(HeadContext);
 
-  const full = title === null ? site.title : `${title} — ${profile.name}`;
+  const full = title === null ? site.title : `${title} · ${profile.name}`;
   const canonical = `${site.url}${path === "/" ? "" : path}`;
   const image = `${site.url}${site.ogImage}`;
 

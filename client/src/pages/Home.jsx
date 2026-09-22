@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { Missing, Rule, Section } from "@/components/Chrome";
+import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import { RotatingAmbigram } from "@/components/RotatingAmbigram";
 import { Head } from "@/lib/head";
 import { useContent } from "@/lib/content";
@@ -83,7 +84,21 @@ export default function Home() {
 
       <main className="mx-auto max-w-5xl px-5 py-14">
         {/* ── work ───────────────────────────────────────────────────────── */}
-        <Section id="work" title="Work">
+        <Section
+          id="work"
+          title="Work"
+          // The one thing the timeline shows that the list cannot: these are not
+          // three consecutive jobs. Stated here so the chart is genuinely a
+          // second view of the same facts rather than the only place a fact
+          // lives — which is also what lets the chart be aria-hidden.
+          lede="Three roles, not consecutively: the ambigram practice has run underneath the salaried work and the tutoring the whole time."
+        >
+          {/* Narrow screens get the axis horizontally, above the list. §2 calls a
+              mid-range phone the majority case, so `hidden md:block` would mean
+              most visitors never saw it. */}
+          <ExperienceTimeline orientation="horizontal" className="mb-10 md:hidden" />
+
+          <div className="md:grid md:grid-cols-[minmax(0,1fr)_15rem] md:gap-10">
           <ol className="space-y-10">
             {experience.map((role) => (
               <li key={role.id}>
@@ -123,6 +138,12 @@ export default function Home() {
               </li>
             ))}
           </ol>
+
+            <ExperienceTimeline
+              orientation="vertical"
+              className="hidden md:sticky md:top-24 md:block md:self-start"
+            />
+          </div>
 
           <div className="mt-10 border-t border-rule pt-6">
             <h3 className="text-lg">{caseStudy.title}</h3>

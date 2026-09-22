@@ -251,10 +251,22 @@ const seed = buildSeed(content);
 await mkdir(path.join(root, "supabase/migrations"), { recursive: true });
 await writeFile(path.join(root, "supabase/migrations/0002_portfolio_seed.sql"), seed, "utf8");
 
+/**
+ * The experience timeline needs a "present" edge, and it has to be the same
+ * value in the prerendered HTML as in the browser. `new Date()` at render time
+ * would put a different number in each — a hydration mismatch on every inline
+ * style the chart emits, and one that only appears after the deploy has aged.
+ *
+ * So it is stamped once, here. Server render and client read the same constant,
+ * the chart is deterministic for the life of a deploy, and it advances on every
+ * rebuild.
+ */
+const asOf = new Date().toISOString().slice(0, 7); // YYYY-MM
+
 await mkdir(path.join(root, "client/src/data"), { recursive: true });
 await writeFile(
   path.join(root, "client/src/data/content.json"),
-  JSON.stringify(content, null, 2) + "\n",
+  JSON.stringify({ ...content, site: { ...content.site, asOf } }, null, 2) + "\n",
   "utf8",
 );
 

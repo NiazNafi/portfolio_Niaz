@@ -117,7 +117,7 @@ export function Section({ id, title, lede, children }) {
 export function Missing({ children }) {
   return (
     <p className="measure rounded-sm border border-dashed border-madder/50 bg-madder/5 px-4 py-3 text-sm text-madder">
-      <strong className="font-medium">Not published yet — </strong>
+      <strong className="font-medium">Not published yet: </strong>
       {children}
     </p>
   );

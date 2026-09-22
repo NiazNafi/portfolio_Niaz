@@ -35,7 +35,7 @@ function Photograph({ photo, only }) {
       />
       <figcaption className="mt-2 text-sm text-ink-soft">
         {photo.caption}
-        {photo.credit && <span className="text-ink-faint"> — {photo.credit}</span>}
+        {photo.credit && <span className="text-ink-faint"> · {photo.credit}</span>}
       </figcaption>
     </figure>
   );
@@ -155,7 +155,7 @@ export default function BracuAlter() {
             <p className="measure mt-3 text-sm text-ink-soft">{caseStudy.video.credit}</p>
             {caseStudy.video.unverified && (
               <p className="measure mt-2 text-sm text-ink-faint">
-                Link not yet verified — see the open items note in the repository.
+                Link not yet verified; see the open items note in the repository.
               </p>
             )}
           </div>

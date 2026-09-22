@@ -85,6 +85,17 @@ const shipped = (await Promise.all(pages.map((p) => readFile(p, "utf8")))).join(
 
 const FORBIDDEN = [
   { pattern: /lorem ipsum/i, why: "placeholder text" },
+  /**
+   * House style: no em dashes anywhere a visitor can see, including HTML
+   * comments, which ship in the source even though nothing renders them.
+   *
+   * This one is easy to reintroduce without noticing — an em dash is the
+   * natural reach for an appositive or a clause join, and it survives a careless
+   * copy-paste out of a draft. The replacements the content uses instead are a
+   * comma, a colon, a semicolon, parentheses, or a full stop, and "to" for date
+   * ranges.
+   */
+  { pattern: /—/, why: "an em dash (house style: use a comma, colon, parentheses or a full stop)" },
   { pattern: /(?:\+?880|\b01)\d[\s-]?\d{4}[\s-]?\d{4}\b/, why: "a phone number (§3)" },
   { pattern: /\bTODO\b|\bFIXME\b/, why: "an unresolved TODO marker" },
   // §5.4: the Facebook embed is disqualified outright, not merely discouraged.
